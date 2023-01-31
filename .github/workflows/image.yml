@@ -20,4 +20,9 @@ jobs:
           docker buildx build \
             --tag devolon/php-runner:8.0-arm \
             --platform linux/amd64,linux/arm/v7,linux/arm64 ./8.0
+      - name: build the image for php 8.1
+        run: |
+          docker buildx build \
+            --tag devolon/php-runner:8.1-arm \
+            --platform linux/amd64,linux/arm/v7,linux/arm64 ./8.1
 
