@@ -5,8 +5,9 @@ on:
     branches: master
 
 jobs:
-  build-php-8.0:
+  build-php-80:
     runs-on: ubuntu-latest
+    name: Build php 8.0
     steps:
       - name: checkout code
         uses: actions/checkout@v2
@@ -20,8 +21,9 @@ jobs:
           docker buildx build \
             --tag devolon/php-runner:8.0-arm \
             --platform linux/amd64,linux/arm/v7,linux/arm64 ./8.0
-  build-php-8.1:
+  build-php-81:
     runs-on: ubuntu-latest
+    name: Build php 8.1
     steps:
       - name: checkout code
         uses: actions/checkout@v2
