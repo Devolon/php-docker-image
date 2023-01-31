@@ -1,11 +1,11 @@
-name: build our image
+name: Build Docker Images
 
 on:
   push:
     branches: master
 
 jobs:
-  build:
+  build-php-8.0:
     runs-on: ubuntu-latest
     steps:
       - name: checkout code
@@ -20,6 +20,16 @@ jobs:
           docker buildx build \
             --tag devolon/php-runner:8.0-arm \
             --platform linux/amd64,linux/arm/v7,linux/arm64 ./8.0
+  build-php-8.1:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+      - name: install buildx
+        id: buildx
+        uses: crazy-max/ghaction-docker-buildx@v1
+        with:
+          version: latest
       - name: build the image for php 8.1
         run: |
           docker buildx build \
