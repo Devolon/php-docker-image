@@ -5,43 +5,9 @@ on:
     branches: master
 
 jobs:
-#  build-php-80:
-#    runs-on: ubuntu-latest
-#    name: Build php 8.0
-#    steps:
-#      - name: checkout code
-#        uses: actions/checkout@v2
-#      - name: install buildx
-#        id: buildx
-#        uses: crazy-max/ghaction-docker-buildx@v1
-#        with:
-#          version: latest
-#      - name: create new buildx driver
-#        run: docker buildx create --use --driver=docker-container
-#      - name: build the image for php 8.0
-#        run: |
-#          docker buildx build \
-#            --push --tag devolon/php-runner:8.0-arm \
-#            --platform linux/amd64,linux/arm/v7,linux/arm64 ./8.0
-#  build-php-81:
-#    runs-on: ubuntu-latest
-#    name: Build php 8.1
-#    steps:
-#      - name: checkout code
-#        uses: actions/checkout@v2
-#      - name: install buildx
-#        id: buildx
-#        uses: crazy-max/ghaction-docker-buildx@v1
-#        with:
-#          version: latest
-#      - name: build the image for php 8.1
-#        run: |
-#          docker buildx build \
-#            --push --tag devolon/php-runner:8.1-arm \
-#            --platform linux/amd64,linux/arm/v7,linux/arm64 ./8.1
-
-  docker:
+  build-and-push-php-80:
     runs-on: ubuntu-latest
+    name: Build and push php 8.0
     steps:
       -
         name: Checkout
@@ -66,6 +32,38 @@ jobs:
           file: "./8.0/Dockerfile"
           push: true
           tags: devolon/php-runner:8.0-arm
+          platforms: linux/amd64,linux/arm/v7,linux/arm64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+
+  build-and-push-php-81:
+    runs-on: ubuntu-latest
+    name: Build and push php 8.1
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      -
+        name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: "./8.1"
+          file: "./8.1/Dockerfile"
+          push: true
+          tags: devolon/php-runner:8.1-arm
           platforms: linux/amd64,linux/arm/v7,linux/arm64
           cache-from: type=gha
           cache-to: type=gha,mode=max
