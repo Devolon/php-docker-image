@@ -59,7 +59,7 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v4
         with:
-          context: ./8.0
+          context: 8.0
           push: true
           tags: devolon/php-runner:8.0-arm
           platforms: linux/amd64,linux/arm/v7,linux/arm64
