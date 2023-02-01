@@ -16,10 +16,12 @@ jobs:
         uses: crazy-max/ghaction-docker-buildx@v1
         with:
           version: latest
+      - name: create new buildx driver
+        run: docker buildx create --use --driver=docker-container
       - name: build the image for php 8.0
         run: |
           docker buildx build \
-            --tag devolon/php-runner:8.0-arm \
+            --push --tag devolon/php-runner:8.0-arm \
             --platform linux/amd64,linux/arm/v7,linux/arm64 ./8.0
   build-php-81:
     runs-on: ubuntu-latest
@@ -35,6 +37,6 @@ jobs:
       - name: build the image for php 8.1
         run: |
           docker buildx build \
-            --tag devolon/php-runner:8.1-arm \
+            --push --tag devolon/php-runner:8.1-arm \
             --platform linux/amd64,linux/arm/v7,linux/arm64 ./8.1
 
